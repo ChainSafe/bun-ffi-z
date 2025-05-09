@@ -17,7 +17,7 @@ export async function build(opts: BuildOptions): Promise<void> {
     cmd.push(`-Doptimize=${opts.optimize}`);
   }
 
-  const res = Bun.spawnSync({
+  Bun.spawnSync({
     cwd: opts.zigCwd,
     cmd: cmd,
   });
