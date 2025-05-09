@@ -11,10 +11,10 @@ export async function build(opts: BuildOptions): Promise<void> {
   const cmd = ["zig", "build"]
 
   const triple = getZigTriple(opts.target);
-  cmd.push("-Dtarget", triple);
+  cmd.push(`-Dtarget=${triple}`);
 
   if (opts.optimize) {
-    cmd.push("-Doptimize", opts.optimize);
+    cmd.push(`-Doptimize=${opts.optimize}`);
   }
 
   Bun.spawnSync({
