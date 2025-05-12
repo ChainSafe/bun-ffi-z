@@ -127,27 +127,38 @@ export async function isMusl(): Promise<boolean> {
   }
 }
 
-
+/**
+ * Get zig dynamic library paths
+ * - on local development, it will be in `zig-out/lib` of the zigCwd
+ * - on published package, it will be in `node_modules/${packageName}/lib${name}.*`
+ */
 export async function getLibraryPaths(
-  cwd: string,
+  zigCwd: string,
   packageName: string,
   name: string,
   platform: NodeJS.Platform,
   arch: NodeJS.Architecture,
 ): Promise<string[]> {
-  const libraryName = getLibraryName(name, platform);
-  const localPath = join(cwd, 'zig-out', 'lib', libraryName);
-
-  const packageTarget = await getTarget(platform, arch);
-  const fullPackageName = `${packageName}-${packageTarget}`;
-  const publishedPath = join(import.meta.resolve(fullPackageName), libraryName);
-
   const paths: string[] = [];
-  for (const path of [localPath, publishedPath]) {
-    if (await Bun.file(path).exists()) {
-      paths.push(path);
-    }
+  const libraryName = getLibraryName(name, platform);
+  // local development
+  const localPath = join(zigCwd, 'zig-out', 'lib', libraryName);
+  if (await Bun.file(localPath).exists()) {
+    paths.push(localPath);
   }
+
+  try {
+    // published package
+    const packageTarget = await getTarget(platform, arch);
+    const fullPackageName = `${packageName}-${packageTarget}`;
+    const publishedPath = join(import.meta.resolve(fullPackageName), libraryName);
+    if (await Bun.file(publishedPath).exists()) {
+      paths.push(publishedPath);
+    }
+  } catch {
+    // on local env, this will fall without a published package on native platform
+  }
+
   return paths;
 }
 
@@ -155,7 +166,7 @@ export async function getLibraryPaths(
  * This function searches all feasible library paths and attempts to load the library.
  * Depending on the platform and architecture, and whether the library has been built locally or published, the library may be in different locations.
  * First, it checks the local build path, then it checks published paths.
- * 
+ *
  * Eg:
  * - built locally, on Linux, `zig-out/lib/libexample.so`
  * - built locally, on Windows, `zig-out/lib/example.dll`
@@ -163,17 +174,18 @@ export async function getLibraryPaths(
  * - published, on WIndows,  `node_modules/${package_name}/example.dll`
  */
 export async function openLibrary<Fns extends Record<string, FFIFunction>>(
-  cwd: string,
+  bunCwd: string,
   abi: Fns,
 ): Promise<Library<Fns>> {
-  const pkgJson = await Bun.file(join(cwd, 'package.json')).json();
+  const pkgJson = await Bun.file(join(bunCwd, 'package.json')).json();
   const packageName = pkgJson.name;
   const platform = process.platform;
   const arch = process.arch;
   const config = await getConfigFromPkgJson(pkgJson);
   const name = config.name;
 
-  const libraryPaths = await getLibraryPaths(cwd, packageName, name, platform, arch);
+  const zigCwd = join(bunCwd, config.zigCwd);
+  const libraryPaths = await getLibraryPaths(zigCwd, packageName, name, platform, arch);
 
   for (const libraryPath of libraryPaths) {
     if (!(await Bun.file(libraryPath).exists())) {
