@@ -67,6 +67,8 @@ bun-ffi-z build
 bun-ffi-z prepublish --artifacts artifacts
 ```
 
+Note that both `targetPackages` and `artifacts` are relative to bun folder.
+
 7. Publish the root package and all target packages prepared above in `targetPackages` subdirectory
 
 ```bash

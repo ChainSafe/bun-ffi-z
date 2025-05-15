@@ -101,8 +101,7 @@ export async function prepublish(): Promise<void> {
   const rootPkgJsonPath = join(bunCwd, "package.json");
   const pkgJson = await Bun.file(rootPkgJsonPath).json() as Json;
   const config = await getConfigFromPkgJson(pkgJson);
-  const zigCwd = join(bunCwd, config.zigCwd);
-  const artifactsDirPath = join(zigCwd, artifactsDir);
+  const artifactsDirPath = join(bunCwd, artifactsDir);
   if (existsSync(artifactsDirPath) == false) {
     throw new Error(`Artifacts directory "${artifactsDirPath}" does not exist`);
   }
