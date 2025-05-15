@@ -102,7 +102,7 @@ export async function prepublish(): Promise<void> {
   const zigCwd = join(bunCwd, config.zigCwd);
   const artifactsDirPath = join(zigCwd, artifactsDir);
   if (await Bun.file(artifactsDirPath).exists() == false) {
-    throw new Error(`Artifacts directory "${artifactsDir}" does not exist`);
+    throw new Error(`Artifacts directory "${artifactsDirPath}" does not exist`);
   }
 
   for (const target of config.targets) {
