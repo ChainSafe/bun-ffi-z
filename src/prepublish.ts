@@ -3,6 +3,7 @@ import {existsSync} from "node:fs";
 import {parseArgs, type ParseArgsOptionsConfig} from "node:util";
 import {getLibraryName, type Target, getTargetParts, getZigTriple} from "./lib.ts";
 import { getConfigFromPkgJson, type Config, type Json } from "./config.ts";
+import { build } from "./build.ts";
 
 export async function writeTargetPackage(
   rootPkgJson: Json,
@@ -53,20 +54,13 @@ This is the ${target} target package for ${rootPkgJson.name}.
 }
 
 export async function copyTargetLibrary(
-  config: Config,
-  target: Target,
-  artifactsDirPath: string,
+  sourceDir: string,
+  destDir: string,
+  libraryName: string,
 ): Promise<void> {
-  const {platform} = getTargetParts(target);
-  const libraryName = getLibraryName(config.name, platform);
-
-  const zigTargetTriple = getZigTriple(target);
-  const targetArtifactDir = join(artifactsDirPath, zigTargetTriple);
-  const targetDir = join(process.cwd(), 'targetPackages', target);
-
   await Bun.write(
-    join(targetDir, libraryName),
-    await Bun.file(join(targetArtifactDir, libraryName)).arrayBuffer(),
+    join(destDir, libraryName),
+    await Bun.file(join(sourceDir, libraryName)).arrayBuffer(),
   );
 }
 
@@ -82,37 +76,89 @@ export async function updateOptionalDependencies(
   return pkgJson;
 }
 
-const prepublishOptions = {
-  "artifacts": {
-    type: "string",
-  },
-} satisfies ParseArgsOptionsConfig;
-
-export async function prepublish(): Promise<void> {
-  const {values} = parseArgs({
-    options: prepublishOptions,
-    allowPositionals: true,
-  });
-  const artifactsDir = values.artifacts as string | undefined;
-  if (artifactsDir == null) {
-    throw new Error("Missing artifacts parameter");
-  }
+/**
+ * Ensure all target packages are ready to be published. This means that each target will get a subdirectory with a package.json, README.md, and its target library.
+ * 
+ * The `artifactsDir` option is the directory, if specified, which will be used to find prebuilt target libraries.
+ * Each prebuilt library is expected to be in a subdirectory named by its target.
+ * 
+ * If either `artifactsDir` is not specified or the directory does not exist, all targets will be rebuilt.
+ * 
+ * If any prebuilt target library is not found, the target will be rebuilt.
+ */
+export async function prepublish({artifactsDir}: {artifactsDir?: string}): Promise<void> {
   const bunCwd = process.cwd();
   const rootPkgJsonPath = join(bunCwd, "package.json");
   const pkgJson = await Bun.file(rootPkgJsonPath).json() as Json;
   const config = await getConfigFromPkgJson(pkgJson);
-  const artifactsDirPath = join(bunCwd, artifactsDir);
-  if (existsSync(artifactsDirPath) == false) {
-    throw new Error(`Artifacts directory "${artifactsDirPath}" does not exist`);
+
+  let artifactsDirPath: string | undefined;
+  if (artifactsDir == null) {
+    console.warn("No artifacts directory specified, rebuilding all targets");
+  } else {
+    artifactsDirPath = join(bunCwd, artifactsDir);
+    if (!existsSync(artifactsDirPath)) {
+      console.warn(`Artifacts directory "${artifactsDirPath}" does not exist, rebuilding all targets`);
+      artifactsDirPath = undefined;
+    }
   }
 
+
   for (const target of config.targets) {
+    const destDir = join(process.cwd(), 'targetPackages', target);
+    let sourceDir: string | undefined;
+    const {platform} = getTargetParts(target);
+    const libraryName = getLibraryName(config.name, platform);
+    if (artifactsDirPath) {
+      sourceDir = join(artifactsDirPath, target);
+      if (!existsSync(join(sourceDir, libraryName))) {
+        console.warn(`Artifact for target "${target}" not found in "${sourceDir}", rebuilding`);
+        sourceDir = undefined;
+      }
+    }
+
+    if (sourceDir == null) {
+      sourceDir = join(config.zigCwd, 'zig-out', 'lib');
+      await build({
+        target,
+        optimize: config.optimize,
+        zigCwd: config.zigCwd,
+      });
+    }
+
     await writeTargetPackage(pkgJson, config, target);
-    await copyTargetLibrary(config, target, artifactsDirPath);
+    await copyTargetLibrary(sourceDir, destDir, libraryName);
   }
   const updatedPkgJson = await updateOptionalDependencies(pkgJson, config);
   await Bun.write(
     rootPkgJsonPath,
     JSON.stringify(updatedPkgJson, null, 2),
   );
+}
+
+const prepublishOptions = {
+  artifacts: {
+    type: "string",
+  },
+} satisfies ParseArgsOptionsConfig;
+
+/**
+ * Ensure all target packages are ready to be published. This means that each target will get a subdirectory with a package.json, README.md, and its target library.
+ * 
+ * The `--artifacts` option is the directory, if specified, which will be used to find prebuilt target libraries.
+ * Each prebuilt library is expected to be in a subdirectory named by its target.
+ * 
+ * If either the `--artifacts` option is not specified or the directory does not exist, all targets will be rebuilt.
+ * 
+ * If any prebuilt target library is not found, the target will be rebuilt.
+ */
+export async function prepublishCli(): Promise<void> {
+  const {values} = parseArgs({
+    options: prepublishOptions,
+    allowPositionals: true,
+  });
+
+  await prepublish({
+    artifactsDir: values.artifacts,
+  });
 }

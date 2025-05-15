@@ -1,6 +1,6 @@
 import { parseArgs } from "node:util";
 import { buildCli } from "./build.ts";
-import { prepublish } from "./prepublish.ts";
+import { prepublishCli } from "./prepublish.ts";
 import { publish } from "./publish.ts";
 
 export async function cli(): Promise<void> {
@@ -15,7 +15,7 @@ export async function cli(): Promise<void> {
     case "build":
       return await buildCli();
     case "prepublish":
-      return await prepublish();
+      return await prepublishCli();
     case "publish":
       return await publish();
     default:
