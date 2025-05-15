@@ -16,20 +16,17 @@ bun install @chainsafe/bun-ffi-z
   "bun-ffi-z": {
     "name": "example",
     "targets": [
-      "x86_64-linux-gnu",
-      "aarch64-linux-gnu",
-      "x86_64-linux-musl",
-      "aarch64-linux-musl",
-      "x86_64-macos-none",
-      "aarch64-macos-none"
+      "linux-x64-gnu",
+      "linux-arm64-gnu",
+      "linux-x64-musl",
+      "linux-arm64-musl",
+      "darwin-x64",
+      "darwin-arm64",
+      "win32-x64"
     ],
-    "zigCwd": ".."
+    "zigCwd": "zig"
   }
 ```
-
-Note that:
-  - `targets` list follows Zig's target tripple convention
-  - `zigCwd` is relative to Bun directory.
 
 4. Use bun-ffi-z to select the proper library
 
