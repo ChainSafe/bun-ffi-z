@@ -1,4 +1,5 @@
 import {join} from "node:path";
+import {existsSync} from "node:fs";
 import {parseArgs, type ParseArgsOptionsConfig} from "node:util";
 import {getLibraryName, type Target, getTargetParts} from "./lib.ts";
 import { getConfigFromPkgJson, type Config, type Json } from "./config.ts";
@@ -101,7 +102,7 @@ export async function prepublish(): Promise<void> {
   const config = await getConfigFromPkgJson(pkgJson);
   const zigCwd = join(bunCwd, config.zigCwd);
   const artifactsDirPath = join(zigCwd, artifactsDir);
-  if (await Bun.file(artifactsDirPath).exists() == false) {
+  if (existsSync(artifactsDirPath) == false) {
     throw new Error(`Artifacts directory "${artifactsDirPath}" does not exist`);
   }
 
