@@ -60,8 +60,8 @@ export async function copyTargetLibrary(
   const {platform} = getTargetParts(target);
   const libraryName = getLibraryName(config.name, platform);
 
-  const zigTargetTripple = getZigTriple(target);
-  const targetArtifactDir = join(artifactsDirPath, zigTargetTripple);
+  const zigTargetTriple = getZigTriple(target);
+  const targetArtifactDir = join(artifactsDirPath, zigTargetTriple);
   const targetDir = join(process.cwd(), 'targetPackages', target);
 
   await Bun.write(
