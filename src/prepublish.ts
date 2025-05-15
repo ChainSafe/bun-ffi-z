@@ -1,7 +1,7 @@
 import {join} from "node:path";
 import {existsSync} from "node:fs";
 import {parseArgs, type ParseArgsOptionsConfig} from "node:util";
-import {getLibraryName, type Target, getTargetParts} from "./lib.ts";
+import {getLibraryName, type Target, getTargetParts, getZigTriple} from "./lib.ts";
 import { getConfigFromPkgJson, type Config, type Json } from "./config.ts";
 
 export async function writeTargetPackage(
@@ -60,7 +60,8 @@ export async function copyTargetLibrary(
   const {platform} = getTargetParts(target);
   const libraryName = getLibraryName(config.name, platform);
 
-  const targetArtifactDir = join(artifactsDirPath, target);
+  const zigTargetTripple = getZigTriple(target);
+  const targetArtifactDir = join(artifactsDirPath, zigTargetTripple);
   const targetDir = join(process.cwd(), 'targetPackages', target);
 
   await Bun.write(
