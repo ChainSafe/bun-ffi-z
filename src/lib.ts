@@ -71,9 +71,9 @@ export function getZigTriple(target: Target): string {
     case 'linux-arm64-musl':
       return 'aarch64-linux-musl';
     case 'darwin-x64':
-      return 'x86_64-macos';
+      return 'x86_64-macos-none';
     case 'darwin-arm64':
-      return 'aarch64-macos';
+      return 'aarch64-macos-none';
     case 'win32-x64-msvc':
       return 'x86_64-windows-msvc';
   }

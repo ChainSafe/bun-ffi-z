@@ -52,13 +52,24 @@ export const close = lib.close;
 bun-ffi-z build
 ```
 
-6. Cross-compile shared libraries for all targets into `targetPackages` subdirectory
-
-```bash
-bun-ffi-z prepublish
+6. On publish CI, prepare an "artifacts" subdirectory which contains all prebuilt binaries
+```yml
+  - name: Download all artifacts
+    if: ${{ steps.release.outputs.release_created }}
+    uses: actions/download-artifact@v4
+    with:
+      path: artifacts
 ```
 
-7. Publish package and all target packages
+7. Prepare `targetPackages` subdirectory by copying prebuilt binaries inside "artifacts" folder prepared above
+
+```bash
+bun-ffi-z prepublish --artifacts artifacts
+```
+
+Note that both `targetPackages` and `artifacts` are relative to bun folder.
+
+8. Publish the root package and all target packages prepared above in `targetPackages` subdirectory
 
 ```bash
 bun-ffi-z publish
