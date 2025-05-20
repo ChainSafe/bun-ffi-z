@@ -30,3 +30,5 @@ jobs:
       - name: Publish
         if: ${{ steps.release.outputs.release_created }}
         run: bun publish
+        env:
+          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
