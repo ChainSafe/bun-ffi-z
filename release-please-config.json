@@ -1,7 +1,7 @@
 {
   "release-type": "none",
   "packages": {
-    "bun": {
+    ".": {
       "changelog-path": "CHANGELOG.md",
       "release-type": "node",
       "package-name": "@chainsafe/bun-ffi-z",
