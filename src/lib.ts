@@ -1,6 +1,7 @@
 import {join} from 'node:path';
+import {fileURLToPath} from "url";
 import {type Library, type FFIFunction, dlopen} from 'bun:ffi';
-import { getConfigFromPkgJson } from './config';
+import {getConfigFromPkgJson} from './config';
 
 if (typeof Bun === "undefined") {
   throw new Error("This script must be run with Bun.");
@@ -151,7 +152,7 @@ export async function getLibraryPaths(
     // published package
     const packageTarget = await getTarget(platform, arch);
     const fullPackageName = `${packageName}-${packageTarget}`;
-    const publishedPath = join(import.meta.resolve(fullPackageName), libraryName);
+    const publishedPath = fileURLToPath(import.meta.resolve(fullPackageName));
     if (await Bun.file(publishedPath).exists()) {
       paths.push(publishedPath);
     }
