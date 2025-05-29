@@ -4,6 +4,7 @@
   "description": "A Bun-FFI library for Zig projects",
   "module": "src/index.ts",
   "type": "module",
+  "exports": "./src/index.ts",
   "files": [
     "src"
   ],
