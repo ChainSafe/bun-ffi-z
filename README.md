@@ -24,27 +24,16 @@ bun install @chainsafe/bun-ffi-z
       "darwin-arm64",
       "win32-x64"
     ],
-    "zigCwd": "zig"
+    "zigCwd": "zig",
+    "zigExportFiles": [
+      "src/root.zig"
+    ]
   }
 ```
 
-4. Use bun-ffi-z to select the proper library
-
-```ts
-import {openLibrary} from "@chainsafe/bun-ffi-z";
-
-const lib = await openLibrary(
-  import.meta.dirname,
-  {
-    add: {
-      args: ["u32", "u32"],
-      returns: "u32"
-    }
-  }
-)
-
-export const symbols = lib.symbols;
-export const close = lib.close;
+4. Use bun-ffi-z to generate the bun ffi binding
+```bash
+bun-ffi-z generate-binding
 ```
 
 5. Build shared library for native host
