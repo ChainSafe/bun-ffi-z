@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.1](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.0.0...bun-ffi-z-v1.0.1) (2025-05-30)
+
+
+### Bug Fixes
+
+* add exports to package.json ([d8da797](https://github.com/ChainSafe/bun-ffi-z/commit/d8da7972d7ca4191bf6c755c0a2d6f05db43472c))
+* add exports to package.json ([5f3ec3a](https://github.com/ChainSafe/bun-ffi-z/commit/5f3ec3a86b7b7cc0c3b71b75f1e6f6c00d078766))
+
 ## 1.0.0 (2025-05-20)
 
 
