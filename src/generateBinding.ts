@@ -9,15 +9,15 @@ export async function generateBinding(): Promise<void> {
   const config = await getConfigFromPkgJson(pkgJson);
 
   const zigExportFiles: string[] = [];
-  
   if (config.zigExportFiles == null) {
     throw new Error("No zigExportFiles specified in bun-ffi-z config");
   }
 
-  for (const file of config.zigExportFiles) {
-    const glob = new Bun.Glob(file);
+  for (const globStr of config.zigExportFiles) {
+    const glob = new Bun.Glob(globStr);
     for (const file of glob.scanSync(config.zigCwd)) {
-      zigExportFiles.push(file);
+      const fullPath = join(config.zigCwd, file);
+      zigExportFiles.push(fullPath);
     }
   }
 
@@ -30,7 +30,6 @@ import path from "node:path";
 import { openLibrary } from "@chainsafe/bun-ffi-z";
 
 const fns = ${JSON.stringify(symbols, null, 2)};
-  
 const lib = await openLibrary(path.join(import.meta.dirname, ".."), fns);
 
 export const symbols = lib.symbols;
