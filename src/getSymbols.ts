@@ -15,7 +15,7 @@ export async function getSymbolsFromZigFiles(files: string[]): Promise<Record<st
 export function getSymbolsFromZigFileContent(content: string): Record<string, FFIFunction> {
   const lines = content.split("\n");
   const out: Record<string, FFIFunction> = {};
-  
+
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]!.trim();
 
@@ -39,11 +39,11 @@ export function getSymbolsFromZigFileContent(content: string): Record<string, FF
     }
 
     const match = line.match(/(?:pub )?export fn (\w+)\(/);
-    if (!match) {
+    if (!match || match.length < 2) {
       continue;
     }
 
-    const fnName = match[0];
+    const fnName = match[1];
 
     let rawArgsAndReturn = line;
     while (!rawArgsAndReturn.includes("{")) {
@@ -59,7 +59,7 @@ export function getSymbolsFromZigFileContent(content: string): Record<string, FF
       .filter(arg => arg) // filter out empty arguments
       .map(arg => arg.split(":")[1]!.trim()) // Get only the type, ignore names
       .map(zigTypeToFfiType);
-    
+
     const returnStart = rawArgsAndReturn.indexOf(")") + 1;
     const returnEnd = rawArgsAndReturn.indexOf("{");
 
