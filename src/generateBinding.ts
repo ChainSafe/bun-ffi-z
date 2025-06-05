@@ -32,7 +32,7 @@ import { openLibrary } from "@chainsafe/bun-ffi-z";
 const fns = ${JSON.stringify(symbols, null, 2)};
 const lib = await openLibrary(path.join(import.meta.dirname, ".."), fns);
 
-export const symbols = lib.symbols;
+export const binding = lib.symbols;
 export const close = lib.close;
 
 `;
