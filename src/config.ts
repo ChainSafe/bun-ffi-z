@@ -6,6 +6,7 @@ export type Config = {
   targets: Target[];
   optimize?: Optimize;
   zigCwd: string;
+  zigExportFiles?: string[];
 };
 
 export interface Json {
@@ -29,6 +30,7 @@ export function parseConfig(input: Json): Config {
   const targets = (input as Record<string, Json>).targets;
   const optimize = (input as Record<string, string>).optimize as Optimize;
   const zigCwd = (input as Record<string, string>).zigCwd;
+  const zigExportFiles = (input as Record<string, string>).zigExportFiles;
 
   if (typeof name !== "string") {
     throw new Error("Invalid config: expected string \"name\"");
@@ -64,5 +66,9 @@ export function parseConfig(input: Json): Config {
     throw new Error("Invalid config: expected string \"zigCwd\"");
   }
 
-  return { name, targets, optimize, zigCwd: zigCwd ?? "." };
+  if (zigExportFiles != null && !Array.isArray(zigExportFiles)) {
+    throw new Error("Invalid config: expected array \"zigExportFiles\"");
+  }
+
+  return { name, targets, optimize, zigCwd: zigCwd ?? ".", zigExportFiles };
 }
