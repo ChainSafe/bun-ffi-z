@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.1.0](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.0.0...bun-ffi-z-v1.1.0) (2025-06-16)
+
+
+### Features
+
+* add generate-binding command ([f210c56](https://github.com/ChainSafe/bun-ffi-z/commit/f210c569c84dda75d2a1b05f34009eb98457fb78))
+* add generate-binding command ([9e2012b](https://github.com/ChainSafe/bun-ffi-z/commit/9e2012be3f98582b67732dc2e78d19a57999f2bc))
+
+
+### Bug Fixes
+
+* add exports to package.json ([d8da797](https://github.com/ChainSafe/bun-ffi-z/commit/d8da7972d7ca4191bf6c755c0a2d6f05db43472c))
+* add exports to package.json ([5f3ec3a](https://github.com/ChainSafe/bun-ffi-z/commit/5f3ec3a86b7b7cc0c3b71b75f1e6f6c00d078766))
+* correct file path ([d738ce8](https://github.com/ChainSafe/bun-ffi-z/commit/d738ce8fbc900dfd51d33e7cf471c60e13b13a60))
+* export binding ([179cdd1](https://github.com/ChainSafe/bun-ffi-z/commit/179cdd129bb75ed849112756666ce860ee68c3f1))
+* extract function name from RegEx ([2d4c17a](https://github.com/ChainSafe/bun-ffi-z/commit/2d4c17a4aed8c127c3452adbe2bc10cf4856c482))
+
 ## 1.0.0 (2025-05-20)
 
 
