@@ -29,7 +29,7 @@ export async function generateBinding(): Promise<void> {
 import path from "node:path";
 import { openLibrary } from "@chainsafe/bun-ffi-z";
 
-const fns = ${JSON.stringify(symbols, null, 2)};
+const fns = ${JSON.stringify(symbols, null, 2)} as const;
 const lib = await openLibrary(path.join(import.meta.dirname, ".."), fns);
 
 export const binding = lib.symbols;
