@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.0...bun-ffi-z-v1.1.1) (2025-07-04)
+
+
+### Bug Fixes
+
+* update generateBinding.ts ([d0911fb](https://github.com/ChainSafe/bun-ffi-z/commit/d0911fb16f9dcc209b390002e573dba2dda2cc8b))
+
 ## [1.1.0](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.0.0...bun-ffi-z-v1.1.0) (2025-06-16)
 
 
