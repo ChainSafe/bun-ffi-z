@@ -1,7 +1,7 @@
 import {join} from "node:path";
 import {existsSync} from "node:fs";
 import {parseArgs, type ParseArgsOptionsConfig} from "node:util";
-import {getLibraryName, type Target, getTargetParts, getZigTriple} from "./lib.ts";
+import {getLibraryName, type Target, getTargetParts} from "./lib.ts";
 import { getConfigFromPkgJson, type Config, type Json } from "./config.ts";
 import { build } from "./build.ts";
 
