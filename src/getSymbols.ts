@@ -43,7 +43,7 @@ export function getSymbolsFromZigFileContent(content: string): Record<string, FF
       continue;
     }
 
-    const fnName = match[1];
+    const fnName = match[1] as string;
 
     let rawArgsAndReturn = line;
     while (!rawArgsAndReturn.includes("{")) {
