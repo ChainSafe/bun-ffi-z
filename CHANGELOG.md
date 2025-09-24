@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.2...bun-ffi-z-v1.1.3) (2025-09-24)
+
+
+### Bug Fixes
+
+* stricter tsconfig ([#15](https://github.com/ChainSafe/bun-ffi-z/issues/15)) ([4accd07](https://github.com/ChainSafe/bun-ffi-z/commit/4accd07e7430a8789420ec9eddfa6ce7856671ca))
+
 ## [1.1.2](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.1...bun-ffi-z-v1.1.2) (2025-09-24)
 
 
