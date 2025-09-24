@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.1...bun-ffi-z-v1.1.2) (2025-09-24)
+
+
+### Bug Fixes
+
+* update comment ([#13](https://github.com/ChainSafe/bun-ffi-z/issues/13)) ([98beffa](https://github.com/ChainSafe/bun-ffi-z/commit/98beffae8a1c9cf7cccc382089fe8a9fbd617fb4))
+
 ## [1.1.1](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.0...bun-ffi-z-v1.1.1) (2025-07-04)
 
 
