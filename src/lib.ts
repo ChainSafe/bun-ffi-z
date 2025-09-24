@@ -1,7 +1,7 @@
 import {join} from 'node:path';
 import {fileURLToPath} from "url";
 import {type Library, type FFIFunction, dlopen} from 'bun:ffi';
-import {getConfigFromPkgJson} from './config';
+import {getConfigFromPkgJson} from './config.ts';
 
 if (typeof Bun === "undefined") {
   throw new Error("This script must be run with Bun.");
