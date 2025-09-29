@@ -94,7 +94,7 @@ export function getLibrarySuffix(platform: NodeJS.Platform): string {
     case 'darwin':
       return '.dylib';
     case 'win32':
-      return '.dll';
+      return '.lib';
     default:
       return '.so';
   }
