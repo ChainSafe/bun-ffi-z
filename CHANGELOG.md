@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.3...bun-ffi-z-v1.1.4) (2025-09-29)
+
+
+### Bug Fixes
+
+* windows library suffix ([#17](https://github.com/ChainSafe/bun-ffi-z/issues/17)) ([8a981fd](https://github.com/ChainSafe/bun-ffi-z/commit/8a981fd22cdcc034110a0603d1a0590deccd613e))
+
 ## [1.1.3](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.2...bun-ffi-z-v1.1.3) (2025-09-24)
 
 
