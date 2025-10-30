@@ -1,11 +1,11 @@
-import {join} from "node:path";
+import { join } from "node:path";
 import { getConfigFromPkgJson, type Json } from "./config.ts";
 import { getSymbolsFromZigFiles } from "./getSymbols.ts";
 
 export async function generateBinding(): Promise<void> {
   const bunCwd = process.cwd();
   const rootPkgJsonPath = join(bunCwd, "package.json");
-  const pkgJson = await Bun.file(rootPkgJsonPath).json() as Json;
+  const pkgJson = (await Bun.file(rootPkgJsonPath).json()) as Json;
   const config = await getConfigFromPkgJson(pkgJson);
 
   const zigExportFiles: string[] = [];
@@ -20,6 +20,9 @@ export async function generateBinding(): Promise<void> {
       zigExportFiles.push(fullPath);
     }
   }
+
+  // Sort to ensure consistent output across platforms
+  zigExportFiles.sort();
 
   const symbols = await getSymbolsFromZigFiles(zigExportFiles);
 
@@ -42,4 +45,3 @@ export const close = lib.close;
 
   console.log(`Binding generated at ${outputPath}`);
 }
-
