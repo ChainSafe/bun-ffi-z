@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.4...bun-ffi-z-v1.1.5) (2025-10-30)
+
+
+### Bug Fixes
+
+* sort zig export files alpha to ensure consistent output ([#19](https://github.com/ChainSafe/bun-ffi-z/issues/19)) ([f97dfa0](https://github.com/ChainSafe/bun-ffi-z/commit/f97dfa05fa2ca2c72cd212dbe86304ae1ff381f8))
+
 ## [1.1.4](https://github.com/ChainSafe/bun-ffi-z/compare/bun-ffi-z-v1.1.3...bun-ffi-z-v1.1.4) (2025-09-29)
 
 
